@@ -1,0 +1,1199 @@
+//---------------------------------------------------------*/
+//  USEFUL INFO                                            */
+//---------------------------------------------------------*/
+
+// 1px = 0.0625rem
+// 2px = 0.125rem
+// 3px = 0.1875rem
+// 4px = 0.25rem
+// 5px = 0.3125rem
+// 6px = 0.375rem
+// 7px = 0.4375rem
+// 8px = 0.5rem
+// 9px = 0.5625rem
+// 10px = 0.625rem
+// 11px = 0.6875rem
+// 12px = 0.75rem
+// 13px = 0.8125rem
+// 14px = 0.875rem
+// 15px = 0.9375rem
+// 16px = 1rem
+
+// cubic-bezier easing: all 400ms cubic-bezier(0.19, 1, 0.22, 1)
+
+//---------------------------------------------------------*/
+//  VARIABLES 'N STUFF                                     */
+//---------------------------------------------------------*/
+
+// Screen sizes: 576px, 768px, 992px, 1200px
+$screen-sizes: (
+    "sm": 36rem,
+    "md": 53rem,
+    "lg": 70rem,
+    "xl": 85rem
+);
+
+$preview-sizes: (
+    "sm": 16rem,
+    "md": 16rem,
+    "lg": 20rem,
+    "xl": 24rem
+);
+
+$text-preview-spacing: (
+    "sm": 0rem,
+    "md": 2rem,
+    "lg": 7rem,
+    "xl": 11rem
+);
+
+$column-count: 12;
+
+$padding-standard: 1rem;
+
+$color-background: #FAFAFA;
+$color-text: #2C3A44;
+$color-red: #D22630;
+$color-red-alt: #C1232C;
+$color-phone-light: #1D2124;
+
+$font-main: "Roboto", sans-serif;
+
+$ease-cubic: cubic-bezier(0.19, 1, 0.22, 1);
+$ease-in-cubic: cubic-bezier(0.78, 0, 0.81, 0);
+
+@function rem-to-px($input){
+    @return $input / 1rem * 16 + "px";
+}
+
+//---------------------------------------------------------*/
+//  VENDOR PREFIXES (transform, flexbox, user-select)      */
+//---------------------------------------------------------*/
+
+@mixin transform($transforms...) {
+    -moz-transform: $transforms;
+    -o-transform: $transforms;
+    -ms-transform: $transforms;
+    -webkit-transform: $transforms;
+    transform: $transforms;
+}
+
+@mixin translate($x, $y) {
+    @include transform(translate($x, $y));
+}
+
+@mixin transition($value...) {
+    -webkit-transition: $value;
+    transition: $value;
+}
+
+@mixin display-flex {
+	display: -moz-box;
+    display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+@mixin display-inline-flex {
+	display: -webkit-inline-flex;
+    display: -webkit-inline-box;
+	display: -moz-inline-flex;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+}
+
+@mixin justify-content($value: flex-start) {
+	@if $value == flex-start {
+		-webkit-box-pack: start;
+        -moz-box-pack: start;
+		-ms-flex-pack: start;
+    }
+	@else if $value == flex-end {
+		-webkit-box-pack: end;
+        -moz-box-pack: end;
+		-ms-flex-pack: end;
+    }
+	@else if $value == space-between {
+		-webkit-box-pack: justify;
+        -moz-box-pack: justify;
+		-ms-flex-pack: justify;
+    }
+	@else if $value == space-around {
+		-ms-flex-pack: distribute;
+    }
+	@else {
+		-webkit-box-pack: $value;
+        -moz-box-pack: $value;
+		-ms-flex-pack: $value;
+    }
+	-webkit-justify-content: $value;
+	-moz-justify-content: $value;
+	justify-content: $value;
+}
+
+@mixin align-items($value: stretch) {
+	@if $value == flex-start {
+		-webkit-box-align: start;
+        -ms-flex-align: start;
+    }
+	@else if $value == flex-end {
+		-webkit-box-align: end;
+        -ms-flex-align: end;
+    }
+	@else {
+		-webkit-box-align: $value;
+        -ms-flex-align: $value;
+    }
+	-webkit-align-items: $value;
+	-moz-align-items: $value;
+	align-items: $value;
+}
+
+@mixin flex-direction($value: row) {
+	@if $value == row-reverse {
+		-webkit-box-direction: reverse;
+		-webkit-box-orient: horizontal;
+        -moz-box-direction: reverse;
+        -moz-box-orient: horizontal;
+    }
+	@else if $value == column {
+		-webkit-box-direction: normal;
+		-webkit-box-orient: vertical;
+        -moz-box-direction: normal;
+        -moz-box-orient: vertical;
+    }
+	@else if $value == column-reverse {
+		-webkit-box-direction: reverse;
+		-webkit-box-orient: vertical;
+        -moz-box-direction: reverse;
+        -moz-box-orient: vertical;
+    }
+	@else {
+		-webkit-box-direction: normal;
+		-webkit-box-orient: horizontal;
+        -moz-box-direction: normal;
+        -moz-box-orient: horizontal;
+    }
+	-webkit-flex-direction: $value;
+	-moz-flex-direction: $value;
+	-ms-flex-direction: $value;
+	flex-direction: $value;
+}
+
+@mixin flex-wrap($value: nowrap) {
+	-webkit-flex-wrap: $value;
+	-moz-flex-wrap: $value;
+	@if $value == nowrap {
+        -ms-flex-wrap: none;
+    }
+	@else {
+        -ms-flex-wrap: $value;
+    }
+	flex-wrap: $value;
+}
+
+@mixin order($value) {
+    -webkit-box-ordinal-group: $value;
+    -moz-box-ordinal-group: $value;
+    -ms-flex-order: $value;
+    -webkit-order: $value;
+    order: $value;
+}
+
+@mixin flex($values) {
+    -webkit-box-flex: $values;
+    -moz-box-flex: $values;
+    -webkit-flex: $values;
+    -ms-flex: $values;
+    flex: $values;
+}
+
+@mixin user-select($value) {
+    -webkit-user-select: $value;
+    -moz-user-select: $value;
+    -ms-user-select: $value;
+    user-select: $value;
+}
+
+@mixin background-gradient{
+    $gradient1: rgba(224, 224, 224, 0.7);
+    $gradient2: rgba(255, 255, 255, 0.7);
+
+    background: -moz-linear-gradient(-45deg, $gradient1 0%, $gradient2 100%);
+    background: -webkit-linear-gradient(-45deg, $gradient1 0%, $gradient2 100%);
+    background: linear-gradient(135deg, $gradient1 0%, $gradient2 100%);
+}
+
+/*---------------------------------------------------------*/
+/*  REBOOT.CSS                                             */
+/*---------------------------------------------------------*/
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: $font-main;
+    line-height: 1.15;
+    -ms-overflow-style: scrollbar;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+body {
+    margin: 0;
+    text-align: left;
+}
+
+@-ms-viewport {
+    width: device-width;
+}
+
+article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {
+    display: block;
+}
+
+[tabindex="-1"]:focus {
+    outline: none !important;
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    margin-top: 0;
+}
+
+ol,
+ul,
+dl {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+ol ol,
+ul ul,
+ol ul,
+ul ol {
+    margin-bottom: 0;
+}
+
+b, strong {
+    font-weight: bolder;
+}
+
+a {
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
+}
+
+a:not([href]):not([tabindex]) {
+    color: inherit;
+    text-decoration: none;
+
+    &:focus {
+        outline: 0;
+    }
+}
+
+img {
+    border-style: none;
+    height: auto;
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+a, area, button, [role="button"], input, label, select, summary, textarea {
+    touch-action: manipulation;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+button:focus {
+    outline: 1px dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+
+input, button, select, optgroup, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
+}
+
+button,
+input {
+    overflow: visible;
+}
+
+button, select {
+    text-transform: none;
+}
+
+button,
+html [type="button"],
+[type="reset"],
+[type="submit"] {
+    -webkit-appearance: button;
+}
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+    border-style: none;
+    padding: 0;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"] {
+    -webkit-appearance: listbox;
+}
+
+/*---------------------------------------------------------*/
+/*  GRID                                                   */
+/*---------------------------------------------------------*/
+
+.row {
+    @include align-items(center);
+    @include display-flex;
+    @include flex(1 1 auto);
+    @include flex-wrap(wrap);
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+    width: 100%;
+}
+
+// .container-fluid {
+//     padding-left: 0;
+//     padding-right: 0;
+// }
+
+// .col-padded {
+//     padding: 0 $padding-standard;
+// }
+
+.col {
+    @include flex(1 1 0);
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+}
+
+// .col-auto {
+//     @include flex(0 0 auto);
+//     max-width: 100%;
+//     position: relative;
+//     width: auto;
+// }
+
+// @for $i from 1 through $column-count {
+// 	.col-#{$i} {
+//         @extend .col-auto;
+//     }
+// }
+
+// @for $i from 1 through $column-count {
+// 	.col-#{$i} {
+// 		@include flex(0 0 percentage($i / $column-count));
+//         max-width: percentage($i / $column-count);
+//     }
+// }
+
+// .order-first {
+//     @include order(-1);
+// }
+
+// .order-last {
+//     @include order($column-count + 1);
+// }
+
+// @for $i from 0 through $column-count {
+// 	.order-#{$i} {
+//         @include order($i);
+//     }
+// }
+
+// @for $i from 1 through ($column-count - 1) {
+// 	.offset-#{$i} {
+//         margin-left: percentage($i / $column-count);
+//     }
+// }
+
+//@each $size in map-keys($screen-sizes) {
+/* #{rem-to-px(map-get($screen-sizes, #{$size}))} */
+    // .col-#{$size},
+    // .col-#{$size}-auto {
+    //     @extend .col-auto;
+    // }
+
+    // @for $i from 1 through $column-count {
+	// 	.col-#{$size}-#{$i} {
+    //         @extend .col-auto;
+    //     }
+    // }
+
+    //@media screen and (min-width: map-get($screen-sizes, #{$size})) {
+        // .row {
+        //     max-width: map-get($screen-sizes, $size);
+        // }
+        
+        // .col-#{$size} {
+        //     @include flex(1 1 0);
+        //     max-width: 100%;
+        // }
+
+        // .col-#{$size}-auto {
+        //     @include flex(0 0 auto);
+        //     max-width: 100%;
+        //     width: auto;
+        // }
+
+        // @for $i from 1 through $column-count {
+    	//     .col-#{$size}-#{$i} {
+    	//     	@include flex(0 0 percentage($i / $column-count));
+        //         max-width: percentage($i / $column-count);
+        //     }
+        // }
+
+        // .order-#{$size}-first {
+        //     @include order(-1);
+        // }
+
+        // .order-#{$size}-last {
+        //     @include order($column-count + 1);
+        // }
+
+        // @for $i from 0 through $column-count {
+        //     .order-#{$size}-#{$i} {
+        //         @include order($i);
+        //     }
+        // }
+
+        // @for $i from 0 through ($column-count - 1) {
+        //     .offset-#{$size}-#{$i} {
+        //         margin-left: percentage($i / $column-count);
+        //     }
+        // }
+//    }
+//}
+
+/*---------------------------------------------------------*/
+/*  CUSTOM STYLES                                          */
+/*---------------------------------------------------------*/
+
+html {
+    background: $color-background;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    color: $color-text;
+    min-height: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
+h1 {
+    color: $color-red;
+    font-size: 1.75rem;
+    margin: 1rem 0 1.5rem;
+}
+
+p,
+li,
+div {
+    line-height: 1.5;
+}
+
+a,
+.link {
+    color: $color-red;
+    cursor: pointer;
+    display: inline;
+    text-decoration: underline;
+
+    &:hover,
+    &:focus {
+        color: $color-red-alt;
+    }
+}
+
+hr {
+    background: $color-text;
+    border: none;
+    height: 1px;
+    margin: 3rem 0;
+    opacity: 0.4;
+    outline: none;
+}
+
+.col-left,
+.col-right {
+    @include flex(0 0 auto);
+    max-width: 100%;
+    position: relative;
+    width: auto;
+}
+
+// .col-left {
+
+// }
+
+.col-right {
+    text-align: center;
+
+    // &::before {
+    //     content: url("icon-griffin.svg");
+    //     display: block;
+    //     height: auto;
+    //     left: 50%;
+    //     opacity: 0.2;
+    //     position: absolute;
+    //     top: 50%;
+    //     @include transform(translate(-50%, -50%));
+    //     width: 44rem;
+    //     z-index: -1;
+    // }
+}
+
+.axway-logo {
+    max-width: 7rem;
+}
+
+.note {
+    color: #404D56;
+    font-size: 0.8rem;
+}
+
+/*---------------------------------------------------------*/
+/*  BOOTANS                                                */
+/*---------------------------------------------------------*/
+.btn {
+    @include align-items(center);
+    background: $color-red;
+    border: 0.125rem solid $color-red;
+    border-radius: 0.25rem;
+    color: #FFF;
+    cursor: pointer;
+    display: inline-block;
+    @include display-inline-flex();
+    min-height: 3.25rem;
+    padding: 0.675rem 1rem;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: all 200ms ease;
+    user-select: none;
+
+    &:hover,
+    &:focus {
+        background-color: $color-red-alt;
+        border-color: $color-red-alt;
+        color: #FFF;
+        outline: none;
+    }
+
+    & svg {
+        margin-right: 0.75rem;
+    }
+
+    & .cta-icon {
+        height: 1.675rem;
+        fill: #FFF;
+        width: 1.675rem;
+    }
+}
+
+.btn-secondary {
+    background: #FFF;
+    color: $color-red;
+
+    &:hover,
+    &:focus {
+        background: #F7E9E9;
+        color: $color-red-alt;
+        outline: none;
+    }
+}
+
+.btn.step-button {
+    background: rgba(210, 38, 48, 0);
+    border: 0;
+    color: $color-red;
+    min-height: auto;
+    padding: 0.5rem;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.06);
+    }
+
+    &.disabled {
+        color: $color-text;
+        cursor: default;
+        opacity: 0.4;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0);
+        }
+    }
+
+    & svg {
+        fill: none;
+        margin: 0;
+        stroke: currentColor;
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    &:last-of-type svg {
+        margin: 0;
+    }
+}
+
+/*---------------------------------------------------------*/
+/*  HERO                                                   */
+/*---------------------------------------------------------*/
+
+.hero {
+    @include align-items(center);
+    @include display-flex();
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    & .row {
+        @include justify-content(center);
+    }
+
+    & .col-right {
+        animation: pop-in 1.6s $ease-cubic both;
+        animation-delay: 300ms;
+    }
+}
+
+.hero-title,
+.hero-text,
+.hero-buttons,
+.axway-logo {
+    animation: pop-in 1s $ease-cubic both;
+}
+
+.hero-title {
+    animation-delay: 75ms;
+    color: $color-text;
+    line-height: 1.15;
+    margin-bottom: 3rem;
+}
+
+.hero-text {
+    animation-delay: 150ms;
+    margin-bottom: 3rem;
+    font-size: 0.875rem;
+
+    & strong {
+        color: $color-red;
+    }
+
+    & ul {
+        list-style-type: none;
+        margin: 0;
+        padding-left: 4rem;
+    }
+
+    & li {
+        margin: 2rem 0;
+        position: relative;
+    }
+}
+
+.hero-icon {
+    fill: none;
+    left: -4rem;
+    position: absolute;
+    stroke: $color-text;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    top: 0;
+    width: 2.5rem;
+}
+
+.hero-buttons {
+    @include align-items(center);
+    animation-delay: 225ms;
+    border: 0;
+    @include display-flex();
+    @include flex-wrap(wrap);
+
+    & > .btn {
+        margin-bottom: 0.5rem;
+    
+        &:not(:last-child) {
+            margin-right: 1rem;
+        }
+    }
+}
+
+.dots-container {
+    animation: zoom-in 1.6s $ease-cubic both;
+    animation-delay: 400ms;
+
+    & > * {
+        @include transition(all 200ms ease);
+        @include translate(0, -8rem);
+    }
+}
+
+.safely {
+    color: $color-red;
+    display: inline-block;
+    position: relative;
+
+    &::after {
+        animation: text-underline 1s $ease-cubic both;
+        animation-delay: 1.5s;
+        background: currentColor;
+        border-radius: 1rem;
+        bottom: -0.0625em;
+        content: '';
+        display: block;
+        height: 0.125em;
+        left: 0;
+        position: absolute;
+    }
+}
+
+@keyframes text-underline {
+    from {
+        width: 0%;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes pop-in {
+    from {
+        opacity: 0;
+        @include translate(0, 4rem);
+    }
+    to {
+        opacity: 1;
+        @include translate(0, 0);
+    }
+}
+
+@keyframes zoom-in {
+    from {
+        opacity: 0;
+        @include transform(scale(0));
+    }
+    to {
+        opacity: 1;
+        @include transform(scale(1));
+    }
+}
+
+.corner-bottom-left,
+.corner-top-right {
+    opacity: 0.5;
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+}
+
+.corner-bottom-left {
+    bottom: 0;
+    left: 0;
+    max-width: 55%;
+    width: 44rem;
+}
+
+.corner-top-right {
+    max-width: 40%;
+    right: 0;
+    top: 0;
+    width: 26rem;
+}
+
+/*---------------------------------------------------------*/
+/*  PHONE                                                  */
+/*---------------------------------------------------------*/
+
+.phone-container {
+    @include display-flex();
+    @include justify-content(center);
+    font-size: 0.875em;
+    padding-bottom: 2em;
+}
+
+.phone-title {
+    font-size: 1.125em;
+    opacity: 0.8;
+    text-align: center;
+    margin: 1em 0 0;
+}
+
+.phone {
+    background: $color-phone-light;
+    border-radius: 3.5em;
+    box-shadow: inset 0 0.375em 0.375em rgba(255, 255, 255, 0.3),
+                inset 0.25em 0 0.25em rgba(255, 255, 255, 0.2),
+                inset -0.25em 0 0.25em rgba(255, 255, 255, 0.2),
+                inset 0 -0.375em 0.375em rgba(0, 0, 0, 0.4);
+    display: inline-block;
+    padding: 1em;
+    position: relative;
+    @include transition(transform 200ms ease);
+    @include transform(scale(0.67));
+
+    &::after {
+        background: $color-phone-light;
+        border-radius: 0 1em 1em 0;
+        content: "";
+        display: block;
+        height: 5em;
+        left: 100%;
+        position: absolute;
+        top: 9em;
+        width: 0.25em;
+    }
+    &::before {
+        background: $color-phone-light;
+        border-radius: 1em 0 0 1em;
+        box-shadow: 0 4em 0 $color-phone-light;
+        content: "";
+        display: block;
+        height: 3em;
+        position: absolute;
+        right: 100%;
+        top: 8em;
+        width: 0.25em;
+    }
+}
+
+.phone-top {
+    background: $color-phone-light;
+    border-radius: 0 0 1.25em 1.25em;
+    height: 1.5em;
+    left: 50%;
+    position: absolute;
+    top: 1em;
+    @include translate(-50%, 0);
+    width: 11em;
+    z-index: 3;
+
+    &::after,
+    &::before {
+        border-radius: 1em;
+        content: "";
+        display: block;
+        position: absolute;
+    }
+
+    &::after {
+        background: rgba(0, 0, 0, 0.5);
+        height: 0.5em;
+        left: 50%;
+        top: 0.5em;
+        @include translate(-50%, -50%);
+        width: 3em;
+    }
+
+    &::before {
+        background: rgba(0, 0, 0, 0.5);
+        height: 0.625em;
+        left: 50%;
+        top: 0.5em;
+        @include translate(2em, -50%);
+        width: 0.625em;
+    }
+}
+
+.phone-shadow {
+    background: rgba(0, 0, 0, 1);
+    bottom: 0;
+    content: "";
+    filter: blur(0.625em);
+    height: 0.5em;
+    left: 50%;
+    position: absolute;
+    @include translate(-50%, 0);
+    width: 89%;
+    z-index: -1;
+}
+
+.preview {
+    border-radius: 2.5em;
+    box-shadow: 0 0.375em 0.375em rgba(255, 255, 255, 0.1);
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    width: 22em;
+}
+
+.preview-sizer {
+    opacity: 0;
+}
+
+.screenshot {
+    left: 0;
+    opacity: 1;
+    position: absolute;
+    top: 0;
+    @include transition(transform 0.5s $ease-cubic);
+    z-index: 1;
+
+    &.screenshot-active {
+        opacity: 1;
+        z-index: 2;
+    }
+
+    &.screenshot-right,
+    &.screenshot-left {
+        opacity: 0;
+        @include transition(transform 0.5s ease, opacity 0.5s ease);
+    }
+
+    &.screenshot-right {
+        @include translate(100%, 0);
+    }
+
+    &.screenshot-left {
+        @include translate(-100%, 0);
+    }
+}
+
+.dots-container,
+#dots {
+    @include align-items(center);
+    @include display-flex();
+    @include flex-wrap(nowrap);
+    @include justify-content(center);
+}
+
+#dots {
+    margin: 0 1rem;
+    width: 8rem;
+}
+
+.dot {
+    background: $color-red;
+    border-radius: 1rem;
+    border: 0;
+    content: '';
+    display: block;
+    height: 0.5rem;
+    margin: 0.25rem;
+    opacity: 0.4;
+    outline: 0;
+    @include transition(all 600ms $ease-cubic);
+    width: 0.5rem;
+
+    &.dot-active {
+        opacity: 1;
+        width: 2.5rem;
+    }
+}
+
+/*---------------------------------------------------------*/
+/*  FEATURES                                               */
+/*---------------------------------------------------------*/
+
+.features {
+    background: $color-text;
+    color: $color-background;
+}
+
+/*---------------------------------------------------------*/
+/*  CUSTOM MEDIA QUERIES                                   */
+/*---------------------------------------------------------*/
+
+/* #{rem-to-px(map-get($screen-sizes, "sm"))} */
+@media screen and (min-width: map-get($screen-sizes, "sm")) {
+    .row {
+        max-width: map-get($screen-sizes, "sm");
+        padding: 2.5rem;
+    }
+
+    .hero-text {
+        font-size: 0.9375rem;
+    }
+
+    .phone {
+        @include transform(scale(0.9));
+    }
+
+    .dots-container > * {
+        @include translate(0, -2rem);
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}
+    
+/* #{rem-to-px(map-get($screen-sizes, "md"))} */
+@media screen and (min-width: map-get($screen-sizes, "md")) {
+    .row {
+        max-width: map-get($screen-sizes, "md");
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+    }
+
+    .col-left {
+        @include flex(0 0 #{map-get($screen-sizes, "md") - 8rem - map-get($preview-sizes, "md")});
+        max-width: #{map-get($screen-sizes, "md") - 8rem - map-get($preview-sizes, "md")};
+        padding-right: map-get($text-preview-spacing, "md");
+    }
+
+    .col-right {
+        @include flex(0 0 map-get($preview-sizes, "md"));
+        max-width: map-get($preview-sizes, "md");
+
+        &::before {
+            width: #{map-get($preview-sizes, "md") * 2 - 4rem};
+        }
+    }
+
+    .hero-text {
+        font-size: 0.875rem;
+    }
+
+    .phone {
+        @include transform(scale(0.7));
+    }
+
+    .dots-container > * {
+        @include translate(0, -7rem);
+    }
+
+    .axway-logo {
+        max-width: 8rem;
+    }
+}
+
+/* #{rem-to-px(map-get($screen-sizes, "lg"))} */
+@media screen and (min-width: map-get($screen-sizes, "lg")) {
+    .row {
+        max-width: map-get($screen-sizes, "lg");
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .col-left {
+        @include flex(0 0 #{map-get($screen-sizes, "lg") - 8rem - map-get($preview-sizes, "lg")});
+        max-width: #{map-get($screen-sizes, "lg") - 8rem - map-get($preview-sizes, "lg")};
+        padding-right: map-get($text-preview-spacing, "lg");
+    }
+
+    .col-right {
+        @include flex(0 0 map-get($preview-sizes, "lg"));
+        max-width: map-get($preview-sizes, "lg");
+
+        &::before {
+            width: #{map-get($preview-sizes, "lg") * 2 - 4rem};
+        }
+    }
+
+    .hero-text {
+        font-size: 0.9375rem;
+    }
+
+    .phone {
+        @include transform(scale(0.9));
+    }
+
+    .dots-container > * {
+        @include translate(0, -2rem);
+    }
+
+    h1 {
+        font-size: 3rem;
+        margin: 1.25rem 0 2.25rem;
+    }
+
+    .axway-logo {
+        max-width: 9rem;
+    }
+}
+
+/* #{rem-to-px(map-get($screen-sizes, "xl"))} */
+@media screen and (min-width: map-get($screen-sizes, "xl")) {
+    .row {
+        max-width: map-get($screen-sizes, "xl");
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+    
+    .col-left {
+        @include flex(0 0 #{map-get($screen-sizes, "xl") - 8rem - map-get($preview-sizes, "xl")});
+        max-width: #{map-get($screen-sizes, "xl") - 8rem - map-get($preview-sizes, "xl")};
+        padding-right: map-get($text-preview-spacing, "xl");
+    }
+
+    .col-right {
+        @include flex(0 0 map-get($preview-sizes, "xl"));
+        max-width: map-get($preview-sizes, "xl");
+
+        &::before {
+            width: #{map-get($preview-sizes, "xl") * 2 - 5rem};
+        }
+    }
+
+    .hero-text {
+        font-size: 1rem;
+    }
+
+    .phone {
+        @include transform(scale(1));
+    }
+
+    .dots-container > * {
+        @include translate(0, 0);
+    }
+
+    h1 {
+        font-size: 3.5rem;
+        margin: 1.5rem 0 2.5rem;
+    }
+
+    .axway-logo {
+        max-width: 10rem;
+    }
+}
