@@ -1,4 +1,4 @@
-# griffin-app.github.io
+# The Griffin App
 The Axway Griffin App goes open source!
 <p align="center">
 <a href="https://griffin-app.github.io/griffin-app-1.png"><img src="https://griffin-app.github.io/griffin-app-1-sm.png"></a>
@@ -14,7 +14,7 @@ The Griffin App is a free, open source mobile application developed by [Axway](h
 - 📅 Built-in calendar for easily scheduling and coordinating in-office hours among teams
 - 🔍 "Weekly view" of upcoming office capacity levels
 - 🏙 Support for multiple office locations, each with different office hour policies and capacity limits
-- 📈 Analytics dashboard for HR or other priviledged users to view office traffic trends and set policies/limits for each office location
+- 📈 Analytics dashboard for HR or other privileged users to view office traffic trends and set policies/limits for each office location
 - 🎨 Easy customization for your logos, colors, and branding
 - 🔒 App and APIs secured by OAuth SSO
 - 🚀 Native iOS and Android support all-in-one (thanks to the wonderful team behind [Axway Titanium](https://github.com/appcelerator/titanium_mobile))
